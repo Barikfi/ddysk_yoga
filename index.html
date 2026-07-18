@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>21-Day Free Online Yoga — Dr. Dipali Danda Yoga Sadhana Kendra, Durgapur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:#0f3d2e;
+    --pine-deep:#0a2b20;
+    --pine-soft:#e6efe6;
+    --parchment:#f6f1e4;
+    --parchment-2:#efe7d2;
+    --saffron:#e2831c;
+    --gold:#c1962f;
+    --ink:#1c2620;
+    --ink-soft:#4b5850;
+    --line:rgba(15,61,46,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--parchment);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  h1,h2,h3,h4{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; color:var(--pine-deep);}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--saffron);
+    font-weight:600;
+  }
+  .wrap{max-width:1160px; margin:0 auto; padding:0 28px;}
+  section{padding:88px 0;}
+  @media(max-width:720px){ section{padding:56px 0;} }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,241,228,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:1160px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:12px;}
+  .om-badge{
+    width:42px; height:42px; border-radius:50%;
+    border:1.5px solid var(--pine);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-size:1.3rem; color:var(--pine);
+    flex-shrink:0;
+  }
+  .brand-name{font-family:'Fraunces', serif; font-weight:600; font-size:1rem; color:var(--pine-deep); line-height:1.15;}
+  .brand-name span{display:block; font-family:'JetBrains Mono', monospace; font-size:0.62rem; letter-spacing:0.1em; color:var(--ink-soft); font-weight:400; text-transform:uppercase; margin-top:2px;}
+  nav.links{display:flex; gap:32px; align-items:center;}
+  nav.links a{font-size:0.9rem; font-weight:500; color:var(--ink-soft); transition:color .2s;}
+  nav.links a:hover{color:var(--pine);}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--pine); color:var(--parchment);
+    padding:12px 24px; border-radius:100px;
+    font-weight:600; font-size:0.88rem;
+    border:1px solid var(--pine);
+    cursor:pointer; transition:all .25s ease;
+  }
+  .btn:hover{background:var(--pine-deep); transform:translateY(-1px);}
+  .btn.ghost{background:transparent; color:var(--pine); border-color:var(--pine);}
+  .btn.ghost:hover{background:var(--pine); color:var(--parchment);}
+  .btn.saffron{background:var(--saffron); border-color:var(--saffron); color:#fff;}
+  .btn.saffron:hover{background:#c96f10;}
+  .menu-toggle{display:none;}
+  @media(max-width:860px){
+    nav.links{display:none;}
+    .menu-toggle{display:block;}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:64px 0 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+  }
+  @media(max-width:900px){ .hero .wrap{grid-template-columns:1fr; text-align:center;} }
+  .hero h1{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    line-height:1.04;
+    margin-bottom:22px;
+  }
+  .hero h1 em{font-style:italic; color:var(--saffron);}
+  .hero p.lede{
+    font-size:1.08rem; color:var(--ink-soft); max-width:480px; margin-bottom:30px;
+  }
+  @media(max-width:900px){ .hero p.lede{margin-left:auto; margin-right:auto;} }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px;}
+  @media(max-width:900px){ .hero-ctas{justify-content:center;} }
+  .trust-row{display:flex; align-items:center; gap:12px; font-size:0.85rem; color:var(--ink-soft);}
+  @media(max-width:900px){ .trust-row{justify-content:center;} }
+  .trust-row strong{color:var(--pine-deep);}
+
+  /* breathing mandala — signature element */
+  .mandala-wrap{
+    display:flex; align-items:center; justify-content:center; position:relative; height:420px;
+  }
+  .mandala{position:relative; width:340px; height:340px;}
+  .ring{
+    position:absolute; inset:0; border-radius:50%;
+    border:1.5px solid var(--pine);
+    opacity:0.55;
+  }
+  .ring.r1{animation:breathe 8s ease-in-out infinite;}
+  .ring.r2{inset:34px; border-color:var(--gold); animation:breathe 8s ease-in-out infinite; animation-delay:0.15s;}
+  .ring.r3{inset:68px; border-color:var(--saffron); animation:breathe 8s ease-in-out infinite; animation-delay:0.3s;}
+  .ring.r4{inset:102px; border-color:var(--pine); border-style:dashed; animation:breathe 8s ease-in-out infinite; animation-delay:0.45s;}
+  .mandala-core{
+    position:absolute; inset:136px; border-radius:50%;
+    background:var(--pine); color:var(--parchment);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-size:2.1rem;
+    animation:breathe 8s ease-in-out infinite; animation-delay:0.6s;
+    box-shadow:0 18px 40px rgba(15,61,46,0.25);
+  }
+  @keyframes breathe{
+    0%,100%{ transform:scale(0.86); }
+    50%{ transform:scale(1); }
+  }
+  .breath-label{
+    position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .breath-label span{animation:fadeswap 8s ease-in-out infinite;}
+  @keyframes fadeswap{ 0%,45%{opacity:1;} 50%,95%{opacity:0.35;} 100%{opacity:1;} }
+
+  /* ---------- countdown ---------- */
+  .countdown-bar{
+    background:var(--pine); color:var(--parchment);
+  }
+  .countdown-inner{
+    display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between;
+    padding:22px 0;
+  }
+  .countdown-inner .wrap{display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between; width:100%;}
+  .cd-label{font-size:0.95rem; font-weight:500; opacity:0.9;}
+  .cd-label strong{font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem;}
+  .cd-timer{display:flex; gap:14px;}
+  .cd-unit{text-align:center; min-width:56px;}
+  .cd-unit .num{font-family:'JetBrains Mono', monospace; font-size:1.5rem; font-weight:600;}
+  .cd-unit .unit{font-size:0.62rem; text-transform:uppercase; letter-spacing:0.1em; opacity:0.75;}
+
+  /* ---------- stat strip ---------- */
+  .stat-strip{background:var(--parchment-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .stat-strip .wrap{display:flex; flex-wrap:wrap; gap:40px; padding:36px 28px; justify-content:space-between;}
+  .stat{text-align:left;}
+  .stat .num{font-family:'Fraunces', serif; font-size:2.1rem; color:var(--pine-deep); font-weight:600;}
+  .stat .lbl{font-size:0.8rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em;}
+
+  /* ---------- section heads ---------- */
+  .section-head{max-width:620px; margin-bottom:46px;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.3rem); margin-top:10px;}
+  .section-head p{color:var(--ink-soft); margin-top:12px;}
+  .center{margin-left:auto; margin-right:auto; text-align:center;}
+
+  /* ---------- benefits grid ---------- */
+  .benefits-grid{display:grid; grid-template-columns:repeat(5, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:18px; overflow:hidden;}
+  @media(max-width:900px){ .benefits-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:520px){ .benefits-grid{grid-template-columns:1fr;} }
+  .benefit-card{background:var(--parchment); padding:32px 22px; text-align:center; transition:background .2s;}
+  .benefit-card:hover{background:var(--pine-soft);}
+  .benefit-icon{
+    width:52px; height:52px; margin:0 auto 16px; border-radius:50%;
+    background:var(--pine); display:flex; align-items:center; justify-content:center; color:var(--parchment);
+  }
+  .benefit-card h4{font-size:0.98rem; margin-bottom:4px;}
+  .benefit-card p{font-size:0.82rem; color:var(--ink-soft);}
+
+  /* ---------- two-col: program + register ---------- */
+  .program{background:var(--pine); color:var(--parchment); border-radius:24px; overflow:hidden;}
+  .program .wrap{padding:0;}
+  .program-grid{display:grid; grid-template-columns:1fr 1fr;}
+  @media(max-width:860px){ .program-grid{grid-template-columns:1fr;} }
+  .program-copy{padding:56px 52px;}
+  .program-copy .eyebrow{color:var(--gold);}
+  .program-copy h2{color:var(--parchment); margin-top:10px; font-size:2rem;}
+  .checklist{margin-top:26px; display:grid; gap:14px;}
+  .checklist li{list-style:none; display:flex; gap:12px; align-items:flex-start; font-size:0.96rem; opacity:0.94;}
+  .checklist li:before{
+    content:"✓"; flex-shrink:0; width:22px; height:22px; border-radius:50%;
+    background:var(--saffron); color:#fff; font-size:0.7rem; font-weight:700;
+    display:flex; align-items:center; justify-content:center; margin-top:2px;
+  }
+  .program-register{
+    background:var(--pine-deep); padding:56px 52px; display:flex; flex-direction:column; justify-content:center;
+  }
+  .program-register h3{color:var(--parchment); font-size:1.4rem; margin-bottom:8px;}
+  .program-register p{color:rgba(246,241,228,0.75); font-size:0.9rem; margin-bottom:24px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-size:0.78rem; letter-spacing:0.04em; text-transform:uppercase; color:rgba(246,241,228,0.65); margin-bottom:6px;}
+  .field input{
+    width:100%; padding:13px 16px; border-radius:10px; border:1px solid rgba(246,241,228,0.25);
+    background:rgba(246,241,228,0.06); color:var(--parchment); font-size:0.95rem; font-family:'Inter',sans-serif;
+  }
+  .field input::placeholder{color:rgba(246,241,228,0.4);}
+  .field input:focus{outline:2px solid var(--saffron); outline-offset:1px; background:rgba(246,241,228,0.1);}
+  .form-note{font-size:0.76rem; color:rgba(246,241,228,0.55); margin-top:14px;}
+
+  /* ---------- trainer ---------- */
+  .trainer{display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:center;}
+  @media(max-width:860px){ .trainer{grid-template-columns:1fr;} }
+  .trainer-photo{
+    border-radius:20px; overflow:hidden; border:1px solid var(--line);
+    box-shadow:0 24px 50px rgba(15,61,46,0.14);
+  }
+  .trainer-copy h2{font-size:2rem; margin-top:10px; margin-bottom:6px;}
+  .trainer-role{color:var(--saffron); font-weight:600; font-size:0.95rem; margin-bottom:18px;}
+  .credential-row{display:flex; gap:12px; flex-wrap:wrap; margin:22px 0;}
+  .credential-pill{
+    border:1px solid var(--line); border-radius:100px; padding:9px 18px; font-size:0.82rem; font-weight:500;
+    display:flex; align-items:center; gap:8px; background:var(--parchment-2);
+  }
+  .trainer-copy p.bio{color:var(--ink-soft); max-width:520px;}
+
+  /* ---------- how it works ---------- */
+  .how-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
+  @media(max-width:900px){ .how-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:520px){ .how-grid{grid-template-columns:1fr;} }
+  .how-card{padding:28px; border:1px solid var(--line); border-radius:16px; background:var(--parchment-2);}
+  .how-card .step{font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--saffron); letter-spacing:0.1em;}
+  .how-card h4{margin:10px 0 6px; font-size:1.02rem;}
+  .how-card p{font-size:0.85rem; color:var(--ink-soft);}
+
+  /* ---------- Gallery ---------- */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .gallery-item {
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--line);
+    background: var(--parchment-2);
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; padding:22px 0;
+    display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+    font-family:'Fraunces', serif; font-size:1.05rem; color:var(--pine-deep); font-weight:500;
+  }
+  .faq-q .icon{font-family:'JetBrains Mono', monospace; font-size:1.1rem; color:var(--saffron); transition:transform .25s;}
+  .faq-item.open .faq-q .icon{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .faq-a p{padding-bottom:20px; color:var(--ink-soft); font-size:0.92rem; max-width:640px;}
+
+  /* ---------- final CTA ---------- */
+  .final-cta{
+    text-align:center; background:var(--parchment-2); border-radius:24px; padding:64px 28px;
+  }
+  .final-cta h2{font-size:clamp(1.8rem,3.5vw,2.5rem); max-width:640px; margin:12px auto 26px;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--pine-deep); color:rgba(246,241,228,0.75); padding:52px 0 24px;}
+  .footer-grid{display:flex; flex-wrap:wrap; justify-content:space-between; gap:36px; margin-bottom:36px;}
+  .footer-brand{max-width:280px;}
+  .footer-brand .brand-name{color:var(--parchment);}
+  .footer-brand p{font-size:0.85rem; margin-top:12px; opacity:0.8;}
+  footer h5{color:var(--parchment); font-size:0.8rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:14px;}
+  footer ul{list-style:none; display:grid; gap:9px;}
+  footer ul a{font-size:0.88rem; opacity:0.82; transition:opacity .2s;}
+  footer ul a:hover{opacity:1;}
+  .footer-bottom{border-top:1px solid rgba(246,241,228,0.15); padding-top:22px; font-size:0.78rem; opacity:0.6; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+/* ---------- Popup Banner ---------- */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 43, 32, 0.85); /* Deep pine with opacity */
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  
+  .popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .popup-content {
+    position: relative;
+    max-width: 500px; /* Adjust this to change how wide the poster gets */
+    width: 90%;
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.4s ease;
+  }
+  
+  .popup-overlay.show .popup-content {
+    transform: translateY(0) scale(1);
+  }
+  
+  .popup-content img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 24px 50px rgba(0,0,0,0.4);
+    border: 2px solid var(--saffron);
+  }
+  
+  .popup-close {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 36px;
+    height: 36px;
+    background: var(--saffron);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 10;
+    transition: background 0.2s, transform 0.2s;
+  }
+  
+  .popup-close:hover {
+    background: #c96f10;
+    transform: scale(1.1);
+  }
+  /* whatsapp float */
+  .wa-float{
+    position:fixed; bottom:22px; right:22px; z-index:60;
+    width:56px; height:56px; border-radius:50%; background:#25D366;
+    display:flex; align-items:center; justify-content:center; color:#fff;
+    box-shadow:0 10px 24px rgba(0,0,0,0.25); font-size:1.5rem;
+  }
+</style>
+</head>
+<body>
+<!-- Popup Banner -->
+<div id="promoPopup" class="popup-overlay">
+  <div class="popup-content">
+    <button id="closePopup" class="popup-close" aria-label="Close popup">&times;</button>
+    <!-- Replace 'assets/poster.jpg' with your actual banner image path if different -->
+    <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" target="_blank" rel="noopener">
+      <img src="assets/test.jpg" alt="Join our 21-Day Free Yoga Program">
+    </a>
+  </div>
+</div>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Dr. Dipali Danda Yoga Sadhana Kendra" style="width:42px; height:42px;">
+      <div class="brand-name">Dr. Dipali Danda<br>Yoga Sadhana Kendra<span>Durgapur, W.B.</span></div>
+    </div>
+    <nav class="links">
+      <a href="#program">Program</a>
+      <a href="#trainer">Trainer</a>
+      <a href="#how">How it works</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#faq">FAQs</a>
+      <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener">Join Free</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">21 Days · Fully Online · 100% Free</p>
+      <h1>Transform your body,<br>calm your <em>mind</em>,<br>elevate your life.</h1>
+      <p class="lede">A free, live 21-day yoga habit-building program for every age and every body — guided daily by a government-certified teacher, from wherever you are.</p>
+      <div class="hero-ctas">
+        <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener">Register for Free</a>
+        <a href="https://wa.me/919434606094" class="btn ghost" target="_blank" rel="noopener">Ask on WhatsApp</a>
+      </div>
+      <div class="trust-row">
+        <span>🪷</span>
+        <span><strong>7+ years</strong> teaching · <strong>M.Sc (Yoga)</strong> · Govt. Certified Instructor</span>
+      </div>
+    </div>
+    <div class="mandala-wrap">
+      <div class="mandala">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <div class="ring r4"></div>
+        <div class="mandala-core">ॐ</div>
+        <div class="breath-label"><span>Inhale · Exhale</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="countdown-bar">
+  <div class="countdown-inner wrap">
+    <div class="cd-label">Batch starts <strong>2 August 2026</strong> — reserve your spot today</div>
+    <div class="cd-timer" id="countdown">
+      <div class="cd-unit"><div class="num" id="cd-days">--</div><div class="unit">Days</div></div>
+      <div class="cd-unit"><div class="num" id="cd-hours">--</div><div class="unit">Hrs</div></div>
+      <div class="cd-unit"><div class="num" id="cd-mins">--</div><div class="unit">Min</div></div>
+      <div class="cd-unit"><div class="num" id="cd-secs">--</div><div class="unit">Sec</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="stat-strip">
+  <div class="wrap">
+    <div class="stat"><div class="num">21</div><div class="lbl">Days of live sessions</div></div>
+    <div class="stat"><div class="num">100%</div><div class="lbl">Free to join</div></div>
+    <div class="stat"><div class="num">7+</div><div class="lbl">Years experience</div></div>
+    <div class="stat"><div class="num">All Ages</div><div class="lbl">Open to everyone</div></div>
+  </div>
+</div>
+
+<section id="benefits">
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">Why join</p>
+      <h2>Five reasons your body will thank you</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">🧘</div>
+        <h4>Improve Flexibility</h4>
+        <p>Loosen tight joints and muscles</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🫁</div>
+        <h4>Boost Immunity</h4>
+        <p>Strengthen your body's defences</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🪷</div>
+        <h4>Reduce Stress</h4>
+        <p>Breathwork that calms the mind</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">⚡</div>
+        <h4>Increase Energy</h4>
+        <p>Feel lighter, sharper, awake</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">❤️</div>
+        <h4>Stay Fit &amp; Healthy</h4>
+        <p>Build a habit that lasts</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="program">
+  <div class="wrap">
+    <div class="program">
+      <div class="program-grid">
+        <div class="program-copy">
+          <p class="eyebrow">What's included</p>
+          <h2>Everything you get in 21 days</h2>
+          <ul class="checklist">
+            <li>Daily live yoga sessions</li>
+            <li>Pranayama &amp; meditation practice</li>
+            <li>Weight management guidance</li>
+            <li>Stress relief techniques</li>
+            <li>Better posture &amp; flexibility work</li>
+            <li>Healthy lifestyle guidance</li>
+          </ul>
+        </div>
+        <div class="program-register" id="register">
+          <h3>Reserve your free spot</h3>
+          <p>Registration takes less than a minute. Fill the form and we'll confirm your place over WhatsApp before the batch starts.</p>
+          <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener" style="width:100%; justify-content:center; margin-top:6px;">Register for Free</a>
+          <p class="form-note">Opens our Google Form in a new tab. Have questions first? <a href="https://wa.me/919434606094" target="_blank" rel="noopener" style="color:var(--parchment); text-decoration:underline;">Message us on WhatsApp</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trainer">
+  <div class="wrap">
+    <div class="trainer">
+      <div class="trainer-photo">
+        <img src="assets/poster.jpg" alt="Subhas Chandra Mahata, Yoga Teacher">
+      </div>
+      <div class="trainer-copy">
+        <p class="eyebrow">Meet your teacher</p>
+        <h2>Subhas Chandra Mahata</h2>
+        <p class="trainer-role">M.Sc (Yoga) Pure · Govt. Certified Yoga Teacher</p>
+        <div class="credential-row">
+          <div class="credential-pill">🎓 M.Sc (Yoga)</div>
+          <div class="credential-pill">📜 Govt. Certified</div>
+          <div class="credential-pill">🕒 7+ Years Experience</div>
+        </div>
+        <p class="bio">Teaching under Dr. Dipali Danda Yoga Sadhana Kendra in Durgapur, West Bengal, Subhas guides students of every age and fitness level through asana, pranayama, and meditation — building a daily practice that's realistic and sustainable, not just a 21-day burst.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">How it works</p>
+      <h2>Simple to join, easy to keep up</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="step">21 Days</div>
+        <h4>21 steps forward</h4>
+        <p>One guided session a day builds a habit that sticks.</p>
+      </div>
+      <div class="how-card">
+        <div class="step">Live Online</div>
+        <h4>Join from anywhere</h4>
+        <p>Every session streams live — no studio commute needed.</p>
+      </div>
+      <div class="how-card">
+        <div class="step">Open Group</div>
+        <h4>All age groups welcome</h4>
+        <p>Sessions are paced for beginners and seniors alike.</p>
+      </div>
+      <div class="how-card">
+        <div class="step">Direct Support</div>
+        <h4>Message us anytime</h4>
+        <p>Questions go straight to your teacher on WhatsApp.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="section-head center">
+      <p class="eyebrow">Gallery</p>
+      <h2>Glimpses of our Sadhana</h2>
+    </div>
+    <div class="gallery-grid" id="galleryContainer">
+      <!-- Images will be injected here automatically by JavaScript -->
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap" style="max-width:760px;">
+    <div class="section-head">
+      <p class="eyebrow">Questions</p>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div id="faqList">
+      <div class="faq-item open">
+        <button class="faq-q">Is this program really free?<span class="icon">+</span></button>
+        <div class="faq-a" style="max-height:200px;"><p>Yes — all 21 days of live sessions are completely free to join. There is no hidden fee to register.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need any prior yoga experience?<span class="icon">+</span></button>
+        <div class="faq-a"><p>No. Sessions are designed to welcome complete beginners as well as regular practitioners, and are paced for all age groups.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What do I need to join a session?<span class="icon">+</span></button>
+        <div class="faq-a"><p>Just a phone or laptop, an internet connection, and a small space to lay a mat. A link will be shared with you after registration.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">When does the next batch start?<span class="icon">+</span></button>
+        <div class="faq-a"><p>The next 21-day batch begins on 2 August 2026. Register early to get your confirmation and joining link in time.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Who do I contact with questions?<span class="icon">+</span></button>
+        <div class="faq-a"><p>Reach Subhas Chandra Mahata directly on WhatsApp at 9434606094 for any query before or during the program.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final-cta">
+      <p class="eyebrow">Yoga for every body, every mind, every soul</p>
+      <h2>21 days can change how the rest of your year feels.</h2>
+      <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener">Register for Free</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-name">Dr. Dipali Danda<br>Yoga Sadhana Kendra</div>
+        <p>Durgapur, West Bengal — a free 21-day habit-building yoga program for every age and every body.</p>
+      </div>
+      <div>
+        <h5>Program</h5>
+        <ul>
+          <li><a href="#benefits">Benefits</a></li>
+          <li><a href="#program">What's included</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#faq">FAQs</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="https://wa.me/919434606094" target="_blank" rel="noopener">WhatsApp: 9434606094</a></li>
+          <li><a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" target="_blank" rel="noopener">Register for Free</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Dr. Dipali Danda Yoga Sadhana Kendra, Durgapur</span>
+      <span>Batch starts 02-08-2026</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/919434606094" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+
+<script>
+  // Countdown to 2 Aug 2026
+  const target = new Date("2026-08-02T00:00:00+05:30").getTime();
+  function updateCountdown(){
+    const now = Date.now();
+    const diff = Math.max(0, target - now);
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const item = btn.closest('.faq-item');
+      const answer = item.querySelector('.faq-a');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>{
+        i.classList.remove('open');
+        i.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        answer.style.maxHeight = answer.scrollHeight + "px";
+      }
+    });
+  });
+
+  // Load Gallery from images.json
+  async function loadGallery() {
+    try {
+      const response = await fetch('images.json');
+      
+      if (!response.ok) {
+        throw new Error('Could not load images.json');
+      }
+      
+      const images = await response.json();
+      const container = document.getElementById('galleryContainer');
+      
+      images.forEach(img => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.innerHTML = `<img src="${img.src}" alt="${img.alt}" loading="lazy">`;
+        container.appendChild(div);
+      });
+    } catch (error) {
+      console.error('Error loading gallery images:', error);
+      document.getElementById('galleryContainer').innerHTML = 
+        '<p style="text-align:center; grid-column: 1 / -1; color: var(--ink-soft);">Gallery currently unavailable.</p>';
+    }
+  }
+
+  // Initialize the gallery fetch
+  loadGallery();
+  // Popup Banner Logic
+  document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('promoPopup');
+    const closeBtn = document.getElementById('closePopup');
+
+    // Show popup after 3 seconds (3000 milliseconds)
+    setTimeout(() => {
+      // Using sessionStorage prevents the popup from annoying users 
+      // every single time they refresh or navigate the page in one sitting.
+      if (!sessionStorage.getItem('popupShown')) {
+        popup.classList.add('show');
+        sessionStorage.setItem('popupShown', 'true');
+      }
+    }, 3000);
+
+    // Close when clicking the 'X' button
+    closeBtn.addEventListener('click', () => {
+      popup.classList.remove('show');
+    });
+
+    // Close when clicking the dark overlay outside the poster
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.classList.remove('show');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
