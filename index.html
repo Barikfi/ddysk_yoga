@@ -46,7 +46,55 @@
   /* ---------- reduced motion ---------- */
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+    .reveal{opacity:1 !important; transform:none !important;}
   }
+
+  /* ---------- scroll progress ---------- */
+  .progress-bar{
+    position:fixed; top:0; left:0; height:3px; width:0%; z-index:100;
+    background:linear-gradient(90deg, var(--saffron), var(--gold));
+    transition:width .08s linear;
+  }
+
+  /* ---------- scroll reveal system ---------- */
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+    will-change:opacity, transform;
+  }
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+  .reveal.r-left{transform:translateX(-32px);}
+  .reveal.r-left.in-view{transform:translateX(0);}
+  .reveal.r-right{transform:translateX(32px);}
+  .reveal.r-right.in-view{transform:translateX(0);}
+  .reveal.r-scale{transform:scale(0.92);}
+  .reveal.r-scale.in-view{transform:scale(1);}
+  .stagger.in-view > *{ animation:staggerUp .7s cubic-bezier(.22,1,.36,1) both; }
+  .stagger.in-view > *:nth-child(1){animation-delay:.02s;}
+  .stagger.in-view > *:nth-child(2){animation-delay:.09s;}
+  .stagger.in-view > *:nth-child(3){animation-delay:.16s;}
+  .stagger.in-view > *:nth-child(4){animation-delay:.23s;}
+  .stagger.in-view > *:nth-child(5){animation-delay:.30s;}
+  .stagger.in-view > *:nth-child(6){animation-delay:.37s;}
+  .stagger.in-view > *:nth-child(n+7){animation-delay:.42s;}
+  @keyframes staggerUp{
+    from{opacity:0; transform:translateY(22px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  /* ---------- back to top ---------- */
+  .to-top{
+    position:fixed; bottom:22px; right:90px; z-index:60;
+    width:48px; height:48px; border-radius:50%;
+    background:var(--pine); color:var(--parchment); border:none;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(0,0,0,0.2); cursor:pointer;
+    font-size:1.1rem; opacity:0; visibility:hidden; transform:translateY(10px);
+    transition:opacity .3s, transform .3s, visibility .3s, background .2s;
+  }
+  .to-top.show{opacity:1; visibility:visible; transform:translateY(0);}
+  .to-top:hover{background:var(--pine-deep);}
+  @media(max-width:640px){ .to-top{right:22px; bottom:86px;} }
 
   /* ---------- Header ---------- */
   header{
@@ -54,7 +102,10 @@
     background:rgba(246,241,228,0.92);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
+    transition:box-shadow .3s ease, padding .3s ease;
   }
+  header.scrolled{ box-shadow:0 8px 30px rgba(15,61,46,0.08); }
+  header.scrolled .nav{ padding-top:10px; padding-bottom:10px; }
   .nav{
     display:flex; align-items:center; justify-content:space-between;
     padding:16px 28px; max-width:1160px; margin:0 auto;
@@ -73,18 +124,31 @@
   nav.links a{font-size:0.9rem; font-weight:500; color:var(--ink-soft); transition:color .2s;}
   nav.links a:hover{color:var(--pine);}
   .btn{
+    position:relative; overflow:hidden;
     display:inline-flex; align-items:center; gap:8px;
     background:var(--pine); color:var(--parchment);
     padding:12px 24px; border-radius:100px;
     font-weight:600; font-size:0.88rem;
     border:1px solid var(--pine);
-    cursor:pointer; transition:all .25s ease;
+    cursor:pointer; transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
   }
-  .btn:hover{background:var(--pine-deep); transform:translateY(-1px);}
+  .btn::after{
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.35), transparent 60%);
+    opacity:0; transition:opacity .3s ease; pointer-events:none;
+  }
+  .btn:hover::after{opacity:1;}
+  .btn:hover{background:var(--pine-deep); transform:translateY(-2px); box-shadow:0 10px 22px rgba(15,61,46,0.25);}
+  .btn:active{transform:translateY(0);}
   .btn.ghost{background:transparent; color:var(--pine); border-color:var(--pine);}
   .btn.ghost:hover{background:var(--pine); color:var(--parchment);}
   .btn.saffron{background:var(--saffron); border-color:var(--saffron); color:#fff;}
-  .btn.saffron:hover{background:#c96f10;}
+  .btn.saffron:hover{background:#c96f10; box-shadow:0 10px 26px rgba(226,131,28,0.35);}
+  .btn.pulse{animation:ctaPulse 2.6s ease-in-out infinite;}
+  @keyframes ctaPulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(226,131,28,0.35); }
+    50%{ box-shadow:0 0 0 10px rgba(226,131,28,0); }
+  }
   .menu-toggle{display:none;}
   @media(max-width:860px){
     nav.links{display:none;}
@@ -97,6 +161,27 @@
     position:relative;
     overflow:hidden;
   }
+  .hero-petals{position:absolute; inset:0; pointer-events:none; z-index:0;}
+  .petal{
+    position:absolute; font-size:1.4rem; opacity:0.35;
+    animation:petalFloat linear infinite;
+  }
+  @keyframes petalFloat{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.4; }
+    90%{ opacity:0.3; }
+    100%{ transform:translateY(-420px) translateX(30px) rotate(200deg); opacity:0; }
+  }
+  .hero > .wrap{position:relative; z-index:1;}
+  .hero h1 .word{display:inline-block; opacity:0; transform:translateY(18px); animation:wordIn .7s cubic-bezier(.22,1,.36,1) forwards;}
+  @keyframes wordIn{ to{opacity:1; transform:translateY(0);} }
+  .hero-ctas .btn, .hero p.lede, .trust-row{opacity:0; animation:heroFade .8s cubic-bezier(.22,1,.36,1) forwards;}
+  .hero p.lede{animation-delay:.5s;}
+  .hero-ctas .btn:nth-child(1){animation-delay:.65s;}
+  .hero-ctas .btn:nth-child(2){animation-delay:.75s;}
+  .trust-row{animation-delay:.85s;}
+  @keyframes heroFade{ to{opacity:1;} }
+  .mandala-wrap{ animation:heroFade 1s ease forwards; animation-delay:.3s; opacity:0; }
   .hero .wrap{
     display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
   }
@@ -121,6 +206,14 @@
   .mandala-wrap{
     display:flex; align-items:center; justify-content:center; position:relative; height:420px;
   }
+  .mandala-wrap::before{
+    content:""; position:absolute; width:380px; height:380px; border-radius:50%;
+    background:radial-gradient(circle, rgba(226,131,28,0.16), rgba(15,61,46,0.08) 55%, transparent 72%);
+    filter:blur(6px); z-index:0;
+    animation:glowPulse 8s ease-in-out infinite;
+  }
+  @keyframes glowPulse{ 0%,100%{ opacity:0.7; transform:scale(0.95); } 50%{ opacity:1; transform:scale(1.05); } }
+  .mandala{position:relative; z-index:1;}
   .mandala{position:relative; width:340px; height:340px;}
   .ring{
     position:absolute; inset:0; border-radius:50%;
@@ -184,12 +277,14 @@
   .benefits-grid{display:grid; grid-template-columns:repeat(5, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:18px; overflow:hidden;}
   @media(max-width:900px){ .benefits-grid{grid-template-columns:repeat(2,1fr);} }
   @media(max-width:520px){ .benefits-grid{grid-template-columns:1fr;} }
-  .benefit-card{background:var(--parchment); padding:32px 22px; text-align:center; transition:background .2s;}
-  .benefit-card:hover{background:var(--pine-soft);}
+  .benefit-card{background:var(--parchment); padding:32px 22px; text-align:center; transition:background .3s, transform .3s; position:relative; z-index:1;}
+  .benefit-card:hover{background:var(--pine-soft); transform:translateY(-6px); z-index:2;}
   .benefit-icon{
     width:52px; height:52px; margin:0 auto 16px; border-radius:50%;
     background:var(--pine); display:flex; align-items:center; justify-content:center; color:var(--parchment);
+    font-size:1.3rem; transition:transform .4s cubic-bezier(.34,1.56,.64,1);
   }
+  .benefit-card:hover .benefit-icon{transform:scale(1.12) rotate(-8deg);}
   .benefit-card h4{font-size:0.98rem; margin-bottom:4px;}
   .benefit-card p{font-size:0.82rem; color:var(--ink-soft);}
 
@@ -236,14 +331,17 @@
   .credential-pill{
     border:1px solid var(--line); border-radius:100px; padding:9px 18px; font-size:0.82rem; font-weight:500;
     display:flex; align-items:center; gap:8px; background:var(--parchment-2);
+    transition:transform .25s ease, border-color .25s ease;
   }
+  .credential-pill:hover{transform:translateY(-3px); border-color:var(--gold);}
   .trainer-copy p.bio{color:var(--ink-soft); max-width:520px;}
 
   /* ---------- how it works ---------- */
   .how-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
   @media(max-width:900px){ .how-grid{grid-template-columns:repeat(2,1fr);} }
   @media(max-width:520px){ .how-grid{grid-template-columns:1fr;} }
-  .how-card{padding:28px; border:1px solid var(--line); border-radius:16px; background:var(--parchment-2);}
+  .how-card{padding:28px; border:1px solid var(--line); border-radius:16px; background:var(--parchment-2); transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;}
+  .how-card:hover{transform:translateY(-6px); box-shadow:0 18px 34px rgba(15,61,46,0.12); border-color:var(--gold);}
   .how-card .step{font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--saffron); letter-spacing:0.1em;}
   .how-card h4{margin:10px 0 6px; font-size:1.02rem;}
   .how-card p{font-size:0.85rem; color:var(--ink-soft);}
@@ -261,6 +359,11 @@
     aspect-ratio: 4 / 3;
     border: 1px solid var(--line);
     background: var(--parchment-2);
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .gallery-item:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 18px 34px rgba(15,61,46,0.16);
   }
   .gallery-item img {
     width: 100%;
@@ -378,6 +481,7 @@
 </style>
 </head>
 <body>
+<div class="progress-bar" id="progressBar"></div>
 <!-- Popup Banner -->
 <div id="promoPopup" class="popup-overlay">
   <div class="popup-content">
@@ -388,7 +492,7 @@
     </a>
   </div>
 </div>
-<header>
+<header id="siteHeader">
   <div class="nav">
     <div class="brand">
       <img src="assets/logo.png" alt="Dr. Dipali Danda Yoga Sadhana Kendra" style="width:42px; height:42px;">
@@ -406,10 +510,11 @@
 </header>
 
 <section class="hero">
+  <div class="hero-petals" id="heroPetals"></div>
   <div class="wrap">
     <div>
       <p class="eyebrow">21 Days · Fully Online · 100% Free</p>
-      <h1>Transform your body,<br>calm your <em>mind</em>,<br>elevate your life.</h1>
+      <h1><span class="word" style="animation-delay:.05s">Transform</span> <span class="word" style="animation-delay:.12s">your</span> <span class="word" style="animation-delay:.19s">body,</span><br><span class="word" style="animation-delay:.26s">calm</span> <span class="word" style="animation-delay:.33s">your</span> <em><span class="word" style="animation-delay:.4s">mind</span></em><span class="word" style="animation-delay:.4s">,</span><br><span class="word" style="animation-delay:.47s">elevate</span> <span class="word" style="animation-delay:.54s">your</span> <span class="word" style="animation-delay:.61s">life.</span></h1>
       <p class="lede">A free, live 21-day yoga habit-building program for every age and every body — guided daily by a government-certified teacher, from wherever you are.</p>
       <div class="hero-ctas">
         <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener">Register for Free</a>
@@ -446,21 +551,21 @@
 </div>
 
 <div class="stat-strip">
-  <div class="wrap">
-    <div class="stat"><div class="num">21</div><div class="lbl">Days of live sessions</div></div>
-    <div class="stat"><div class="num">100%</div><div class="lbl">Free to join</div></div>
-    <div class="stat"><div class="num">7+</div><div class="lbl">Years experience</div></div>
+  <div class="wrap stagger reveal">
+    <div class="stat"><div class="num" data-count="21" data-suffix="">0</div><div class="lbl">Days of live sessions</div></div>
+    <div class="stat"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">Free to join</div></div>
+    <div class="stat"><div class="num" data-count="7" data-suffix="+">0</div><div class="lbl">Years experience</div></div>
     <div class="stat"><div class="num">All Ages</div><div class="lbl">Open to everyone</div></div>
   </div>
 </div>
 
 <section id="benefits">
   <div class="wrap">
-    <div class="section-head center">
+    <div class="section-head center reveal">
       <p class="eyebrow">Why join</p>
       <h2>Five reasons your body will thank you</h2>
     </div>
-    <div class="benefits-grid">
+    <div class="benefits-grid stagger reveal">
       <div class="benefit-card">
         <div class="benefit-icon">🧘</div>
         <h4>Improve Flexibility</h4>
@@ -492,12 +597,12 @@
 
 <section id="program">
   <div class="wrap">
-    <div class="program">
+    <div class="program reveal r-scale">
       <div class="program-grid">
         <div class="program-copy">
           <p class="eyebrow">What's included</p>
           <h2>Everything you get in 21 days</h2>
-          <ul class="checklist">
+          <ul class="checklist stagger">
             <li>Daily live yoga sessions</li>
             <li>Pranayama &amp; meditation practice</li>
             <li>Weight management guidance</li>
@@ -520,10 +625,10 @@
 <section id="trainer">
   <div class="wrap">
     <div class="trainer">
-      <div class="trainer-photo">
+      <div class="trainer-photo reveal r-left">
         <img src="assets/Poster.jpg" alt="Subhas Chandra Mahata, Yoga Teacher">
       </div>
-      <div class="trainer-copy">
+      <div class="trainer-copy reveal r-right">
         <p class="eyebrow">Meet your teacher</p>
         <h2>Subhas Chandra Mahata</h2>
         <p class="trainer-role">M.Sc (Yoga) Pure · Govt. Certified Yoga Teacher</p>
@@ -540,11 +645,11 @@
 
 <section id="how">
   <div class="wrap">
-    <div class="section-head center">
+    <div class="section-head center reveal">
       <p class="eyebrow">How it works</p>
       <h2>Simple to join, easy to keep up</h2>
     </div>
-    <div class="how-grid">
+    <div class="how-grid stagger reveal">
       <div class="how-card">
         <div class="step">21 Days</div>
         <h4>21 steps forward</h4>
@@ -571,11 +676,11 @@
 
 <section id="gallery">
   <div class="wrap">
-    <div class="section-head center">
+    <div class="section-head center reveal">
       <p class="eyebrow">Gallery</p>
       <h2>Glimpses of our Sadhana</h2>
     </div>
-    <div class="gallery-grid" id="galleryContainer">
+    <div class="gallery-grid stagger" id="galleryContainer">
       <!-- Images will be injected here automatically by JavaScript -->
     </div>
   </div>
@@ -583,11 +688,11 @@
 
 <section id="faq">
   <div class="wrap" style="max-width:760px;">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">Questions</p>
       <h2>Frequently asked questions</h2>
     </div>
-    <div id="faqList">
+    <div id="faqList" class="reveal">
       <div class="faq-item open">
         <button class="faq-q">Is this program really free?<span class="icon">+</span></button>
         <div class="faq-a" style="max-height:200px;"><p>Yes — all 21 days of live sessions are completely free to join. There is no hidden fee to register.</p></div>
@@ -614,10 +719,10 @@
 
 <section>
   <div class="wrap">
-    <div class="final-cta">
+    <div class="final-cta reveal r-scale">
       <p class="eyebrow">Yoga for every body, every mind, every soul</p>
       <h2>21 days can change how the rest of your year feels.</h2>
-      <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener">Register for Free</a>
+      <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron pulse" target="_blank" rel="noopener">Register for Free</a>
     </div>
   </div>
 </section>
@@ -654,8 +759,89 @@
 </footer>
 
 <a class="wa-float" href="https://wa.me/919434606094" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
 
 <script>
+  // ---------- Scroll progress bar + header state + back-to-top ----------
+  const progressBar = document.getElementById('progressBar');
+  const siteHeader = document.getElementById('siteHeader');
+  const toTopBtn = document.getElementById('toTop');
+  function onScroll(){
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+    siteHeader.classList.toggle('scrolled', scrollTop > 12);
+    toTopBtn.classList.toggle('show', scrollTop > 500);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+  toTopBtn.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ---------- Scroll reveal (IntersectionObserver) ----------
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15, rootMargin:'0px 0px -60px 0px'});
+  function observeReveals(root=document){
+    root.querySelectorAll('.reveal, .stagger').forEach(el=> revealObserver.observe(el));
+  }
+  observeReveals();
+
+  // ---------- Animated counters ----------
+  const counterObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      counterObserver.unobserve(el);
+    });
+  }, {threshold:0.6});
+  document.querySelectorAll('[data-count]').forEach(el=> counterObserver.observe(el));
+
+  // ---------- Button cursor-glow ----------
+  document.querySelectorAll('.btn').forEach(btn=>{
+    btn.addEventListener('mousemove', (e)=>{
+      const rect = btn.getBoundingClientRect();
+      btn.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      btn.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
+  });
+
+  // ---------- Floating hero petals ----------
+  (function initPetals(){
+    const container = document.getElementById('heroPetals');
+    if(!container) return;
+    const symbols = ['🪷','☀'];
+    const count = window.innerWidth < 700 ? 5 : 9;
+    for(let i=0;i<count;i++){
+      const p = document.createElement('span');
+      p.className = 'petal';
+      p.textContent = symbols[i % symbols.length];
+      p.style.left = (Math.random()*94 + 2) + '%';
+      p.style.bottom = '-40px';
+      p.style.fontSize = (0.9 + Math.random()*0.9) + 'rem';
+      const duration = 14 + Math.random()*10;
+      p.style.animationDuration = duration + 's';
+      p.style.animationDelay = (Math.random()*duration) + 's';
+      container.appendChild(p);
+    }
+  })();
+
   // Countdown to 2 Aug 2026
   const target = new Date("2026-08-02T00:00:00+05:30").getTime();
   function updateCountdown(){
@@ -708,6 +894,9 @@
         div.innerHTML = `<img src="${img.src}" alt="${img.alt}" loading="lazy">`;
         container.appendChild(div);
       });
+      observeReveals(container);
+      container.classList.add('reveal');
+      requestAnimationFrame(()=> revealObserver.observe(container));
     } catch (error) {
       console.error('Error loading gallery images:', error);
       document.getElementById('galleryContainer').innerHTML = 
