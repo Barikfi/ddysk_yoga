@@ -189,7 +189,7 @@
   }
   .pip-video.ready{opacity:1; transform:translateY(0) scale(1);}
   .pip-video.dragging{transition:none; cursor:grabbing;}
-  .pip-video video{width:100%; height:auto; display:block; aspect-ratio:16/10; object-fit:cover; background:var(--pine-deep);}
+  .pip-video video{width:100%; height:auto; display:block; aspect-ratio:16/9; object-fit:contain; background:var(--pine-deep);}
   .pip-drag{
     position:absolute; top:0; left:0; right:0; height:34px; z-index:2;
     display:flex; align-items:center; justify-content:space-between; padding:0 8px;
@@ -212,8 +212,7 @@
     color:rgba(246,241,228,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.5);
     pointer-events:none;
   }
-  .pip-video.minimized{width:64px; box-shadow:0 10px 24px rgba(10,43,32,0.3), 0 0 0 1px rgba(246,241,228,0.08);}
-  .pip-video.minimized video{aspect-ratio:1/1;}
+  .pip-video.minimized{width:104px; box-shadow:0 10px 24px rgba(10,43,32,0.3), 0 0 0 1px rgba(246,241,228,0.08);}
   .pip-video.minimized .pip-label{display:none;}
   .pip-video.minimized .pip-drag{opacity:1; background:rgba(10,43,32,0.35);}
   .pip-video.minimized .pip-dots{display:none;}
@@ -1061,12 +1060,12 @@
   <div class="pip-drag" id="pipDrag">
     <span class="pip-dots">⋮⋮</span>
     <div class="pip-controls">
-      <button id="pipMuteBtn" type="button" aria-label="Toggle sound">🔇</button>
+      <button id="pipMuteBtn" type="button" aria-label="Toggle sound">🔊</button>
       <button id="pipMinBtn" type="button" aria-label="Minimize video">–</button>
       <button id="pipCloseBtn" type="button" aria-label="Close video">×</button>
     </div>
   </div>
-  <video id="pipVideoEl" autoplay muted loop playsinline preload="auto"
+  <video id="pipVideoEl" autoplay loop playsinline preload="auto"
          poster="assets/Poster.jpg">
     <source src="assets/practice-loop.mp4" type="video/mp4">
   </video>
@@ -1181,19 +1180,51 @@
     const restoreBtn = document.getElementById('pipRestoreBtn');
     if(!pip || !video) return;
 
-    // Try to autoplay muted; if the browser still blocks it, start on first interaction.
-    const tryPlay = ()=> video.play().catch(()=>{});
+    // Match the PiP box to the video's real aspect ratio so nothing is cropped.
+    video.addEventListener('loadedmetadata', ()=>{
+      if(video.videoWidth && video.videoHeight){
+        video.style.aspectRatio = video.videoWidth + ' / ' + video.videoHeight;
+      }
+    });
+
+    // Sound is on by default. Browsers block unmuted autoplay without a prior
+    // user gesture, so try unmuted first and only fall back to muted (with a
+    // one-tap unmute) if the browser actually refuses.
+    let pendingUnmute = false;
+    function syncMuteIcon(){ muteBtn.textContent = video.muted ? '🔇' : '🔊'; }
+    function tryPlay(){
+      video.play().catch(()=>{
+        if(!video.muted){
+          video.muted = true;
+          pendingUnmute = true;
+          syncMuteIcon();
+          video.play().catch(()=>{});
+        }
+      });
+    }
+    video.muted = false;
     tryPlay();
-    document.addEventListener('click', tryPlay, {once:true});
-    document.addEventListener('touchstart', tryPlay, {once:true, passive:true});
+    syncMuteIcon();
+
+    function unmuteOnFirstGesture(){
+      if(pendingUnmute){
+        video.muted = false;
+        pendingUnmute = false;
+        syncMuteIcon();
+        tryPlay();
+      }
+    }
+    document.addEventListener('click', unmuteOnFirstGesture, {once:true});
+    document.addEventListener('touchstart', unmuteOnFirstGesture, {once:true, passive:true});
 
     setTimeout(()=> pip.classList.add('ready'), 600);
 
     // ----- mute toggle -----
     muteBtn.addEventListener('click', (e)=>{
       e.stopPropagation();
+      pendingUnmute = false;
       video.muted = !video.muted;
-      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      syncMuteIcon();
       if(!video.muted) tryPlay();
     });
 
