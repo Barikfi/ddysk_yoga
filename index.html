@@ -49,7 +49,31 @@
     .reveal{opacity:1 !important; transform:none !important;}
   }
 
-  /* ---------- scroll progress ---------- */
+  /* ---------- custom cursor ---------- */
+  body.has-custom-cursor, body.has-custom-cursor a, body.has-custom-cursor button{cursor:none;}
+  .cursor-dot, .cursor-ring{
+    position:fixed; top:0; left:0; pointer-events:none; z-index:9999;
+    border-radius:50%; transform:translate(-50%,-50%);
+  }
+  .cursor-dot{width:7px; height:7px; background:var(--saffron); transition:opacity .2s;}
+  .cursor-ring{
+    width:34px; height:34px; border:1.5px solid var(--pine);
+    opacity:0.55;
+    transition:width .25s ease, height .25s ease, border-color .25s ease, opacity .25s ease, background .25s ease;
+  }
+  .cursor-ring.hover{
+    width:56px; height:56px; background:rgba(226,131,28,0.1); border-color:var(--saffron); opacity:0.9;
+  }
+  @media(max-width:900px){ .cursor-dot,.cursor-ring{display:none;} body.has-custom-cursor{cursor:auto;} }
+
+  /* ---------- scroll-spy nav indicator ---------- */
+  nav.links{position:relative;}
+  nav.links a{position:relative;}
+  nav.links a.active{color:var(--pine);}
+  nav.links a.active::after{
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px;
+    background:var(--saffron); border-radius:2px;
+  }
   .progress-bar{
     position:fixed; top:0; left:0; height:3px; width:0%; z-index:100;
     background:linear-gradient(90deg, var(--saffron), var(--gold));
@@ -96,7 +120,121 @@
   .to-top:hover{background:var(--pine-deep);}
   @media(max-width:640px){ .to-top{right:22px; bottom:86px;} }
 
-  /* ---------- Header ---------- */
+  /* ---------- entry veil (Om intro) ---------- */
+  html.veil-lock, html.veil-lock body{ overflow:hidden; height:100%; }
+  .entry-veil{
+    position:fixed; inset:0; z-index:500;
+    background:radial-gradient(circle at 50% 42%, var(--pine) 0%, var(--pine-deep) 72%);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:opacity 1s ease, visibility 1s ease;
+  }
+  .entry-veil.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  .entry-veil-inner{
+    text-align:center; color:var(--parchment);
+    animation:veilFloat 4s ease-in-out infinite;
+  }
+  @keyframes veilFloat{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+  .entry-om{
+    position:relative; width:120px; height:120px; margin:0 auto 26px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-size:3rem; color:var(--parchment);
+  }
+  .entry-om .e-ring{
+    position:absolute; inset:0; border-radius:50%; border:1px solid rgba(246,241,228,0.4);
+    animation:entryPulse 2.6s ease-out infinite;
+  }
+  .entry-om .e-ring:nth-child(2){ animation-delay:0.7s; }
+  .entry-om .e-ring:nth-child(3){ animation-delay:1.4s; }
+  @keyframes entryPulse{
+    0%{ transform:scale(0.7); opacity:0.8; }
+    100%{ transform:scale(1.9); opacity:0; }
+  }
+  .entry-veil-inner p.tap{
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; letter-spacing:0.16em; text-transform:uppercase;
+    opacity:0.85; margin-bottom:6px;
+  }
+  .entry-veil-inner p.sub{
+    font-size:0.82rem; opacity:0.6; font-family:'Inter',sans-serif;
+  }
+  .entry-veil-inner p.sub button{
+    background:none; border:none; color:inherit; text-decoration:underline; cursor:pointer; font-size:inherit; font-family:inherit; opacity:0.9;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .entry-veil-inner, .e-ring{ animation:none !important; }
+  }
+
+  /* ---------- sound toggle ---------- */
+  .sound-toggle{
+    position:fixed; bottom:22px; right:158px; z-index:60;
+    width:48px; height:48px; border-radius:50%;
+    background:var(--parchment); color:var(--pine); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(0,0,0,0.12); cursor:pointer; font-size:1.05rem;
+    opacity:0; visibility:hidden; transform:translateY(10px);
+    transition:opacity .3s, transform .3s, visibility .3s;
+  }
+  .sound-toggle.show{opacity:1; visibility:visible; transform:translateY(0);}
+  @media(max-width:640px){ .sound-toggle{right:22px; bottom:150px;} }
+
+  /* ---------- floating PiP practice video ---------- */
+  .pip-video{
+    position:fixed; left:22px; bottom:22px; z-index:70;
+    width:216px; border-radius:16px; overflow:hidden;
+    background:var(--pine-deep);
+    box-shadow:0 16px 40px rgba(10,43,32,0.35), 0 0 0 1px rgba(246,241,228,0.08);
+    opacity:0; transform:translateY(16px) scale(0.96);
+    transition:opacity .5s ease, transform .5s ease, width .3s ease, height .3s ease;
+    touch-action:none;
+  }
+  .pip-video.ready{opacity:1; transform:translateY(0) scale(1);}
+  .pip-video.dragging{transition:none; cursor:grabbing;}
+  .pip-video video{width:100%; height:auto; display:block; aspect-ratio:16/10; object-fit:cover; background:var(--pine-deep);}
+  .pip-drag{
+    position:absolute; top:0; left:0; right:0; height:34px; z-index:2;
+    display:flex; align-items:center; justify-content:space-between; padding:0 8px;
+    cursor:grab; background:linear-gradient(rgba(10,43,32,0.55), rgba(10,43,32,0));
+    opacity:0; transition:opacity .25s ease;
+  }
+  .pip-video:hover .pip-drag, .pip-video:focus-within .pip-drag{opacity:1;}
+  .pip-dots{color:rgba(246,241,228,0.55); font-size:0.8rem; letter-spacing:2px; user-select:none;}
+  .pip-controls{display:flex; gap:6px;}
+  .pip-controls button{
+    width:24px; height:24px; border-radius:50%; border:none;
+    background:rgba(246,241,228,0.16); color:var(--parchment);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.72rem; cursor:pointer; transition:background .2s;
+  }
+  .pip-controls button:hover{background:rgba(246,241,228,0.32);}
+  .pip-label{
+    position:absolute; left:10px; bottom:8px; z-index:2;
+    font-family:'JetBrains Mono', monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:rgba(246,241,228,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.5);
+    pointer-events:none;
+  }
+  .pip-video.minimized{width:64px; box-shadow:0 10px 24px rgba(10,43,32,0.3), 0 0 0 1px rgba(246,241,228,0.08);}
+  .pip-video.minimized video{aspect-ratio:1/1;}
+  .pip-video.minimized .pip-label{display:none;}
+  .pip-video.minimized .pip-drag{opacity:1; background:rgba(10,43,32,0.35);}
+  .pip-video.minimized .pip-dots{display:none;}
+  .pip-video.minimized .pip-controls{width:100%; justify-content:center;}
+  .pip-video.closed{opacity:0; transform:translateY(16px) scale(0.9); pointer-events:none;}
+  .pip-restore{
+    position:fixed; left:22px; bottom:22px; z-index:70;
+    width:48px; height:48px; border-radius:50%;
+    background:var(--pine); color:var(--parchment); border:none;
+    display:flex; align-items:center; justify-content:center; font-size:1rem;
+    box-shadow:0 10px 24px rgba(0,0,0,0.2); cursor:pointer;
+    opacity:0; visibility:hidden; transform:translateY(10px);
+    transition:opacity .3s, transform .3s, visibility .3s, background .2s;
+  }
+  .pip-restore.show{opacity:1; visibility:visible; transform:translateY(0);}
+  .pip-restore:hover{background:var(--pine-deep);}
+  @media(max-width:640px){
+    .pip-video{width:150px; left:14px; bottom:14px;}
+    .pip-video.minimized{width:56px;}
+    .pip-restore{left:14px; bottom:14px; width:44px; height:44px;}
+  }
   header{
     position:sticky; top:0; z-index:50;
     background:rgba(246,241,228,0.92);
@@ -204,26 +342,29 @@
 
   /* breathing mandala — signature element */
   .mandala-wrap{
-    display:flex; align-items:center; justify-content:center; position:relative; height:420px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; height:460px; gap:6px;
   }
   .mandala-wrap::before{
-    content:""; position:absolute; width:380px; height:380px; border-radius:50%;
+    content:""; position:absolute; top:0; left:50%; transform:translate(-50%,0);
+    width:380px; height:380px; border-radius:50%;
     background:radial-gradient(circle, rgba(226,131,28,0.16), rgba(15,61,46,0.08) 55%, transparent 72%);
-    filter:blur(6px); z-index:0;
+    filter:blur(6px); z-index:0; pointer-events:none;
     animation:glowPulse 8s ease-in-out infinite;
   }
   @keyframes glowPulse{ 0%,100%{ opacity:0.7; transform:scale(0.95); } 50%{ opacity:1; transform:scale(1.05); } }
-  .mandala{position:relative; z-index:1;}
+  .mandala{position:relative; z-index:1; cursor:pointer;}
   .mandala{position:relative; width:340px; height:340px;}
   .ring{
     position:absolute; inset:0; border-radius:50%;
     border:1.5px solid var(--pine);
     opacity:0.55;
+    transition:transform .1s linear;
   }
   .ring.r1{animation:breathe 8s ease-in-out infinite;}
   .ring.r2{inset:34px; border-color:var(--gold); animation:breathe 8s ease-in-out infinite; animation-delay:0.15s;}
   .ring.r3{inset:68px; border-color:var(--saffron); animation:breathe 8s ease-in-out infinite; animation-delay:0.3s;}
   .ring.r4{inset:102px; border-color:var(--pine); border-style:dashed; animation:breathe 8s ease-in-out infinite; animation-delay:0.45s;}
+  .mandala.guiding .ring{animation:none;}
   .mandala-core{
     position:absolute; inset:136px; border-radius:50%;
     background:var(--pine); color:var(--parchment);
@@ -231,7 +372,10 @@
     font-family:'Fraunces', serif; font-size:2.1rem;
     animation:breathe 8s ease-in-out infinite; animation-delay:0.6s;
     box-shadow:0 18px 40px rgba(15,61,46,0.25);
+    transition:transform .1s linear;
+    user-select:none;
   }
+  .mandala.guiding .mandala-core{animation:none;}
   @keyframes breathe{
     0%,100%{ transform:scale(0.86); }
     50%{ transform:scale(1); }
@@ -240,9 +384,23 @@
     position:absolute; bottom:0; left:50%; transform:translateX(-50%);
     font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.15em;
     text-transform:uppercase; color:var(--ink-soft);
+    text-align:center; width:220px;
   }
   .breath-label span{animation:fadeswap 8s ease-in-out infinite;}
+  .mandala.guiding .breath-label span{animation:none;}
   @keyframes fadeswap{ 0%,45%{opacity:1;} 50%,95%{opacity:0.35;} 100%{opacity:1;} }
+  .breath-cta{
+    margin-top:14px; display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .breath-cta button{
+    font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+    background:none; border:1px solid var(--line); color:var(--ink-soft);
+    padding:9px 18px; border-radius:100px; cursor:pointer; transition:all .25s ease;
+  }
+  .breath-cta button:hover{border-color:var(--saffron); color:var(--saffron); background:rgba(226,131,28,0.06);}
+  .breath-count{font-size:0.72rem; color:var(--ink-soft); opacity:0; transition:opacity .3s;}
+  .breath-count.show{opacity:1;}
+
 
   /* ---------- countdown ---------- */
   .countdown-bar{
@@ -324,7 +482,11 @@
   .trainer-photo{
     border-radius:20px; overflow:hidden; border:1px solid var(--line);
     box-shadow:0 24px 50px rgba(15,61,46,0.14);
+    transform-style:preserve-3d; transition:transform .3s ease, box-shadow .3s ease;
+    will-change:transform;
   }
+  .trainer-photo:hover{ box-shadow:0 30px 60px rgba(15,61,46,0.22); }
+  .trainer-photo img{ transition:transform .4s ease; }
   .trainer-copy h2{font-size:2rem; margin-top:10px; margin-bottom:6px;}
   .trainer-role{color:var(--saffron); font-weight:600; font-size:0.95rem; margin-bottom:18px;}
   .credential-row{display:flex; gap:12px; flex-wrap:wrap; margin:22px 0;}
@@ -346,6 +508,26 @@
   .how-card h4{margin:10px 0 6px; font-size:1.02rem;}
   .how-card p{font-size:0.85rem; color:var(--ink-soft);}
 
+  /* ---------- testimonials ---------- */
+  .testimonials{position:relative; max-width:720px; margin:0 auto;}
+  .t-track{overflow:hidden; border-radius:20px;}
+  .t-slides{display:flex; transition:transform .55s cubic-bezier(.65,0,.35,1);}
+  .t-slide{flex:0 0 100%; padding:40px 44px; text-align:center; background:var(--parchment-2); border-radius:20px;}
+  .t-slide .stars{color:var(--saffron); font-size:1rem; letter-spacing:2px; margin-bottom:16px;}
+  .t-slide p.quote{font-family:'Fraunces', serif; font-size:1.2rem; line-height:1.5; color:var(--pine-deep); margin-bottom:20px;}
+  .t-slide .who{font-size:0.85rem; color:var(--ink-soft); font-weight:600;}
+  .t-slide .who span{font-weight:400; opacity:0.8;}
+  .t-controls{display:flex; align-items:center; justify-content:center; gap:18px; margin-top:24px;}
+  .t-arrow{
+    width:40px; height:40px; border-radius:50%; border:1px solid var(--line); background:var(--parchment);
+    cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:1rem; color:var(--pine);
+    transition:all .25s ease;
+  }
+  .t-arrow:hover{border-color:var(--saffron); color:var(--saffron); transform:translateY(-2px);}
+  .t-dots{display:flex; gap:8px;}
+  .t-dot{width:8px; height:8px; border-radius:50%; background:var(--line); cursor:pointer; transition:all .25s ease; border:none; padding:0;}
+  .t-dot.active{background:var(--saffron); width:22px; border-radius:5px;}
+
   /* ---------- Gallery ---------- */
   .gallery-grid {
     display: grid;
@@ -360,11 +542,44 @@
     border: 1px solid var(--line);
     background: var(--parchment-2);
     transition: transform .35s ease, box-shadow .35s ease;
+    cursor:pointer;
+    position:relative;
   }
+  .gallery-item::after{
+    content:"⤢"; position:absolute; top:10px; right:10px; width:30px; height:30px;
+    background:rgba(15,61,46,0.55); color:#fff; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:0.85rem;
+    opacity:0; transition:opacity .25s ease;
+  }
+  .gallery-item:hover::after{opacity:1;}
   .gallery-item:hover{
     transform: translateY(-5px);
     box-shadow: 0 18px 34px rgba(15,61,46,0.16);
   }
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:200; background:rgba(10,20,15,0.92);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease;
+  }
+  .lightbox.show{opacity:1; visibility:visible;}
+  .lightbox img{
+    max-width:min(84vw, 900px); max-height:80vh; border-radius:10px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.5);
+    transform:scale(0.94); transition:transform .3s ease;
+  }
+  .lightbox.show img{transform:scale(1);}
+  .lightbox-close, .lightbox-nav{
+    position:absolute; background:rgba(246,241,228,0.12); color:#fff; border:1px solid rgba(246,241,228,0.3);
+    border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1.2rem; transition:background .2s;
+  }
+  .lightbox-close:hover, .lightbox-nav:hover{background:rgba(246,241,228,0.25);}
+  .lightbox-close{top:24px; right:24px;}
+  .lightbox-nav.prev{left:24px; top:50%; transform:translateY(-50%);}
+  .lightbox-nav.next{right:24px; top:50%; transform:translateY(-50%);}
+  @media(max-width:640px){ .lightbox-nav{width:38px; height:38px;} }
   .gallery-item img {
     width: 100%;
     height: 100%;
@@ -376,6 +591,21 @@
   }
 
   /* ---------- FAQ ---------- */
+  .faq-search{
+    position:relative; margin-bottom:8px;
+  }
+  .faq-search input{
+    width:100%; padding:14px 20px 14px 44px; border-radius:12px; border:1px solid var(--line);
+    background:var(--parchment-2); font-family:'Inter',sans-serif; font-size:0.92rem; color:var(--ink);
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .faq-search input:focus{outline:none; border-color:var(--saffron); box-shadow:0 0 0 3px rgba(226,131,28,0.12);}
+  .faq-search::before{
+    content:"🔍"; position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:0.85rem; opacity:0.6;
+  }
+  .faq-empty{display:none; padding:24px 0; color:var(--ink-soft); font-size:0.9rem; text-align:center;}
+  .faq-empty.show{display:block;}
+  .faq-item.hidden{display:none;}
   .faq-item{border-bottom:1px solid var(--line);}
   .faq-q{
     width:100%; text-align:left; background:none; border:none; padding:22px 0;
@@ -481,7 +711,21 @@
 </style>
 </head>
 <body>
+<div class="entry-veil" id="entryVeil" role="button" tabindex="0" aria-label="Tap to begin, plays a soft Om tone">
+  <div class="entry-veil-inner">
+    <div class="entry-om">
+      <div class="e-ring"></div>
+      <div class="e-ring"></div>
+      <div class="e-ring"></div>
+      <span>ॐ</span>
+    </div>
+    <p class="tap">Tap to begin</p>
+    <p class="sub">with a sound — or <button type="button" id="enterSilent">enter without sound</button></p>
+  </div>
+</div>
 <div class="progress-bar" id="progressBar"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 <!-- Popup Banner -->
 <div id="promoPopup" class="popup-overlay">
   <div class="popup-content">
@@ -499,11 +743,12 @@
       <div class="brand-name">Dr. Dipali Danda<br>Yoga Sadhana Kendra<span>Durgapur, W.B.</span></div>
     </div>
     <nav class="links">
-      <a href="#program">Program</a>
-      <a href="#trainer">Trainer</a>
-      <a href="#how">How it works</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#faq">FAQs</a>
+      <a href="#program" class="spy-link">Program</a>
+      <a href="#trainer" class="spy-link">Trainer</a>
+      <a href="#testimonials" class="spy-link">Stories</a>
+      <a href="#how" class="spy-link">How it works</a>
+      <a href="#gallery" class="spy-link">Gallery</a>
+      <a href="#faq" class="spy-link">FAQs</a>
       <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener">Join Free</a>
     </nav>
   </div>
@@ -526,13 +771,17 @@
       </div>
     </div>
     <div class="mandala-wrap">
-      <div class="mandala">
+      <div class="mandala" id="breathMandala" role="button" tabindex="0" aria-label="Start guided breathing exercise">
         <div class="ring r1"></div>
         <div class="ring r2"></div>
         <div class="ring r3"></div>
         <div class="ring r4"></div>
         <div class="mandala-core">ॐ</div>
-        <div class="breath-label"><span>Inhale · Exhale</span></div>
+        <div class="breath-label" id="breathLabel"><span>Inhale · Exhale</span></div>
+      </div>
+      <div class="breath-cta">
+        <button id="breathToggle" type="button">🧘 Try a guided breath</button>
+        <span class="breath-count" id="breathCount">0 breaths completed</span>
       </div>
     </div>
   </div>
@@ -643,6 +892,41 @@
   </div>
 </section>
 
+<section id="testimonials">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <p class="eyebrow">Student voices</p>
+      <h2>What the last batch is saying</h2>
+    </div>
+    <div class="testimonials reveal r-scale">
+      <div class="t-track">
+        <div class="t-slides" id="tSlides">
+          <div class="t-slide">
+            <div class="stars">★★★★★</div>
+            <p class="quote">"I've tried yoga apps before and never stuck with it. Having a live teacher and a set time every morning made all the difference — I finished all 21 days."</p>
+            <div class="who">Ananya Roy <span>· Durgapur</span></div>
+          </div>
+          <div class="t-slide">
+            <div class="stars">★★★★★</div>
+            <p class="quote">"My back pain from years of desk work has eased more in three weeks than in months of stretching on my own. Subhas Sir explains every posture so clearly."</p>
+            <div class="who">Ranjit Ghosh <span>· Software Engineer</span></div>
+          </div>
+          <div class="t-slide">
+            <div class="stars">★★★★★</div>
+            <p class="quote">"At 58, I wasn't sure I'd keep up. The pace was gentle but real, and the WhatsApp support meant I never felt lost. Already looking forward to the next batch."</p>
+            <div class="who">Mrs. Debjani Sen <span>· Retired Teacher</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="t-controls">
+        <button class="t-arrow" id="tPrev" aria-label="Previous testimonial">←</button>
+        <div class="t-dots" id="tDots"></div>
+        <button class="t-arrow" id="tNext" aria-label="Next testimonial">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="how">
   <div class="wrap">
     <div class="section-head center reveal">
@@ -692,6 +976,9 @@
       <p class="eyebrow">Questions</p>
       <h2>Frequently asked questions</h2>
     </div>
+    <div class="faq-search reveal">
+      <input type="text" id="faqSearch" placeholder="Search a question…" aria-label="Search FAQs">
+    </div>
     <div id="faqList" class="reveal">
       <div class="faq-item open">
         <button class="faq-q">Is this program really free?<span class="icon">+</span></button>
@@ -713,6 +1000,7 @@
         <button class="faq-q">Who do I contact with questions?<span class="icon">+</span></button>
         <div class="faq-a"><p>Reach Subhas Chandra Mahata directly on WhatsApp at 9434606094 for any query before or during the program.</p></div>
       </div>
+      <p class="faq-empty" id="faqEmpty">No questions match your search. Try a different word, or <a href="https://wa.me/919434606094" target="_blank" rel="noopener" style="color:var(--saffron); text-decoration:underline;">ask us directly on WhatsApp</a>.</p>
     </div>
   </div>
 </section>
@@ -758,10 +1046,114 @@
   </div>
 </footer>
 
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Previous image">←</button>
+  <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-nav next" id="lightboxNext" aria-label="Next image">→</button>
+</div>
 <a class="wa-float" href="https://wa.me/919434606094" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+<button class="sound-toggle" id="soundToggle" aria-label="Toggle Om sound">🔔</button>
 <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
 
+<!-- Floating PiP practice video: plays on loop across the whole site -->
+<div class="pip-video" id="pipVideo">
+  <div class="pip-drag" id="pipDrag">
+    <span class="pip-dots">⋮⋮</span>
+    <div class="pip-controls">
+      <button id="pipMuteBtn" type="button" aria-label="Toggle sound">🔇</button>
+      <button id="pipMinBtn" type="button" aria-label="Minimize video">–</button>
+      <button id="pipCloseBtn" type="button" aria-label="Close video">×</button>
+    </div>
+  </div>
+  <video id="pipVideoEl" autoplay muted loop playsinline preload="auto"
+         poster="assets/Poster.jpg">
+    <source src="assets/practice-loop.mp4" type="video/mp4">
+  </video>
+  <span class="pip-label">Practice with us</span>
+</div>
+<button class="pip-restore" id="pipRestoreBtn" aria-label="Show practice video">▶</button>
+
 <script>
+  // ---------- Synthesized "Om" chant (Web Audio API, no external file needed) ----------
+  let audioCtx = null;
+  function playOmTone(){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if(audioCtx.state === 'suspended') audioCtx.resume();
+      const ctx = audioCtx;
+      const now = ctx.currentTime;
+      const duration = 3.4;
+
+      const master = ctx.createGain();
+      master.gain.value = 0;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 900;
+      master.connect(filter);
+      filter.connect(ctx.destination);
+
+      // fundamental "Om" frequency (136.1 Hz) plus warm harmonics
+      const partials = [
+        {freq:136.1, gain:1.0,  type:'sine'},
+        {freq:204.15, gain:0.22, type:'sine'},
+        {freq:272.2, gain:0.32, type:'triangle'},
+        {freq:408.3, gain:0.13, type:'triangle'},
+        {freq:68.05, gain:0.35, type:'sine'}
+      ];
+      partials.forEach(p=>{
+        const osc = ctx.createOscillator();
+        osc.type = p.type;
+        osc.frequency.value = p.freq;
+        const g = ctx.createGain();
+        g.gain.value = p.gain;
+        osc.connect(g);
+        g.connect(master);
+        osc.start(now);
+        osc.stop(now + duration + 0.6);
+      });
+
+      // gentle vibrato via slow LFO on filter frequency for a chant-like breathing quality
+      const lfo = ctx.createOscillator();
+      lfo.frequency.value = 0.35;
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.value = 120;
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+      lfo.start(now);
+      lfo.stop(now + duration + 0.6);
+
+      // amplitude envelope: soft swell in, hold, long fade out
+      master.gain.setValueAtTime(0, now);
+      master.gain.linearRampToValueAtTime(0.22, now + 0.5);
+      master.gain.linearRampToValueAtTime(0.17, now + duration * 0.55);
+      master.gain.linearRampToValueAtTime(0, now + duration);
+    } catch(e){
+      console.warn('Web Audio unavailable:', e);
+    }
+  }
+
+  // ---------- Entry veil ("tap to begin" ritual) ----------
+  (function initEntryVeil(){
+    const veil = document.getElementById('entryVeil');
+    const enterSilent = document.getElementById('enterSilent');
+    const soundToggle = document.getElementById('soundToggle');
+    if(!veil) return;
+    document.documentElement.classList.add('veil-lock');
+
+    function enter(withSound){
+      if(withSound) playOmTone();
+      veil.classList.add('hide');
+      document.documentElement.classList.remove('veil-lock');
+      setTimeout(()=>{ soundToggle.classList.add('show'); }, 400);
+    }
+    veil.addEventListener('click', ()=> enter(true));
+    veil.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); enter(true); } });
+    enterSilent.addEventListener('click', (e)=>{ e.stopPropagation(); enter(false); });
+    soundToggle.addEventListener('click', ()=> playOmTone());
+  })();
+
+
   // ---------- Scroll progress bar + header state + back-to-top ----------
   const progressBar = document.getElementById('progressBar');
   const siteHeader = document.getElementById('siteHeader');
@@ -777,6 +1169,109 @@
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
   toTopBtn.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ---------- Floating PiP practice video ----------
+  (function(){
+    const pip = document.getElementById('pipVideo');
+    const dragHandle = document.getElementById('pipDrag');
+    const video = document.getElementById('pipVideoEl');
+    const muteBtn = document.getElementById('pipMuteBtn');
+    const minBtn = document.getElementById('pipMinBtn');
+    const closeBtn = document.getElementById('pipCloseBtn');
+    const restoreBtn = document.getElementById('pipRestoreBtn');
+    if(!pip || !video) return;
+
+    // Try to autoplay muted; if the browser still blocks it, start on first interaction.
+    const tryPlay = ()=> video.play().catch(()=>{});
+    tryPlay();
+    document.addEventListener('click', tryPlay, {once:true});
+    document.addEventListener('touchstart', tryPlay, {once:true, passive:true});
+
+    setTimeout(()=> pip.classList.add('ready'), 600);
+
+    // ----- mute toggle -----
+    muteBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      if(!video.muted) tryPlay();
+    });
+
+    // ----- minimize / restore-to-normal -----
+    minBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      pip.classList.toggle('minimized');
+      minBtn.textContent = pip.classList.contains('minimized') ? '⤢' : '–';
+    });
+
+    // ----- close / restore -----
+    function closePip(){
+      pip.classList.add('closed');
+      restoreBtn.classList.add('show');
+    }
+    function openPip(){
+      pip.classList.remove('closed');
+      restoreBtn.classList.remove('show');
+      tryPlay();
+    }
+    closeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); closePip(); });
+    restoreBtn.addEventListener('click', openPip);
+
+    // ----- drag to reposition (mouse + touch), clamped to viewport -----
+    let dragging = false, startX = 0, startY = 0, startLeft = 0, startTop = 0;
+
+    function getRect(){ return pip.getBoundingClientRect(); }
+
+    function pointerDown(e){
+      if(e.target.closest('.pip-controls')) return; // don't drag when tapping buttons
+      dragging = true;
+      pip.classList.add('dragging');
+      const p = e.touches ? e.touches[0] : e;
+      startX = p.clientX; startY = p.clientY;
+      const rect = getRect();
+      startLeft = rect.left; startTop = rect.top;
+      // switch from left/bottom to left/top for smooth dragging
+      pip.style.top = rect.top + 'px';
+      pip.style.left = rect.left + 'px';
+      pip.style.bottom = 'auto';
+      e.preventDefault();
+    }
+    function pointerMove(e){
+      if(!dragging) return;
+      const p = e.touches ? e.touches[0] : e;
+      let newLeft = startLeft + (p.clientX - startX);
+      let newTop = startTop + (p.clientY - startY);
+      const rect = getRect();
+      const maxLeft = window.innerWidth - rect.width - 8;
+      const maxTop = window.innerHeight - rect.height - 8;
+      newLeft = Math.min(Math.max(8, newLeft), Math.max(8, maxLeft));
+      newTop = Math.min(Math.max(8, newTop), Math.max(8, maxTop));
+      pip.style.left = newLeft + 'px';
+      pip.style.top = newTop + 'px';
+    }
+    function pointerUp(){
+      if(!dragging) return;
+      dragging = false;
+      pip.classList.remove('dragging');
+    }
+    dragHandle.addEventListener('mousedown', pointerDown);
+    dragHandle.addEventListener('touchstart', pointerDown, {passive:false});
+    window.addEventListener('mousemove', pointerMove);
+    window.addEventListener('touchmove', pointerMove, {passive:false});
+    window.addEventListener('mouseup', pointerUp);
+    window.addEventListener('touchend', pointerUp);
+
+    // keep it inside the viewport if the window is resized
+    window.addEventListener('resize', ()=>{
+      const rect = getRect();
+      if(pip.style.top){
+        const maxLeft = window.innerWidth - rect.width - 8;
+        const maxTop = window.innerHeight - rect.height - 8;
+        pip.style.left = Math.min(parseFloat(pip.style.left)||0, Math.max(8,maxLeft)) + 'px';
+        pip.style.top = Math.min(parseFloat(pip.style.top)||0, Math.max(8,maxTop)) + 'px';
+      }
+    });
+  })();
 
   // ---------- Scroll reveal (IntersectionObserver) ----------
   const revealObserver = new IntersectionObserver((entries)=>{
@@ -813,14 +1308,206 @@
   }, {threshold:0.6});
   document.querySelectorAll('[data-count]').forEach(el=> counterObserver.observe(el));
 
-  // ---------- Button cursor-glow ----------
+  // ---------- Button cursor-glow + magnetic pull ----------
   document.querySelectorAll('.btn').forEach(btn=>{
     btn.addEventListener('mousemove', (e)=>{
       const rect = btn.getBoundingClientRect();
-      btn.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
-      btn.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+      const relX = e.clientX - rect.left;
+      const relY = e.clientY - rect.top;
+      btn.style.setProperty('--mx', (relX / rect.width * 100) + '%');
+      btn.style.setProperty('--my', (relY / rect.height * 100) + '%');
+      const moveX = (relX / rect.width - 0.5) * 10;
+      const moveY = (relY / rect.height - 0.5) * 10;
+      btn.style.transform = `translate(${moveX}px, ${moveY - 2}px)`;
     });
+    btn.addEventListener('mouseleave', ()=>{ btn.style.transform = ''; });
   });
+
+  // ---------- Custom cursor ----------
+  (function initCursor(){
+    if(window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    document.body.classList.add('has-custom-cursor');
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let rx=0, ry=0, tx=0, ty=0;
+    window.addEventListener('mousemove', (e)=>{
+      tx = e.clientX; ty = e.clientY;
+      dot.style.left = tx + 'px'; dot.style.top = ty + 'px';
+    });
+    function loop(){
+      rx += (tx - rx) * 0.18; ry += (ty - ry) * 0.18;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(loop);
+    }
+    loop();
+    document.querySelectorAll('a, button, .gallery-item, .mandala, input, .t-dot').forEach(el=>{
+      el.addEventListener('mouseenter', ()=> ring.classList.add('hover'));
+      el.addEventListener('mouseleave', ()=> ring.classList.remove('hover'));
+    });
+  })();
+
+  // ---------- Scroll-spy navigation ----------
+  (function initScrollSpy(){
+    const links = document.querySelectorAll('.spy-link');
+    if(!links.length) return;
+    const map = new Map();
+    links.forEach(l=>{
+      const id = l.getAttribute('href').replace('#','');
+      const sec = document.getElementById(id);
+      if(sec) map.set(sec, l);
+    });
+    const spyObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        const link = map.get(entry.target);
+        if(!link) return;
+        if(entry.isIntersecting){
+          links.forEach(l=> l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    }, {rootMargin:'-40% 0px -50% 0px'});
+    map.forEach((link, sec)=> spyObserver.observe(sec));
+  })();
+
+  // ---------- Guided breathing exercise ----------
+  (function initBreathing(){
+    const mandala = document.getElementById('breathMandala');
+    const toggle = document.getElementById('breathToggle');
+    const label = document.getElementById('breathLabel');
+    const countEl = document.getElementById('breathCount');
+    const core = mandala.querySelector('.mandala-core');
+    const rings = mandala.querySelectorAll('.ring');
+    if(!mandala || !toggle) return;
+    let running = false, timeoutId = null, cycles = 0;
+    const phases = [
+      {name:'Inhale', ms:4000, scale:1.08},
+      {name:'Hold', ms:2000, scale:1.08},
+      {name:'Exhale', ms:4000, scale:0.86},
+    ];
+    function setScale(s){
+      core.style.transform = `scale(${s})`;
+      rings.forEach(r=> r.style.transform = `scale(${0.92 + (s-0.86)*0.3})`);
+    }
+    function runPhase(i){
+      if(!running) return;
+      const phase = phases[i % phases.length];
+      label.innerHTML = `<span style="opacity:1">${phase.name}…</span>`;
+      const startScale = i % phases.length === 0 ? 0.86 : phases[(i-1) % phases.length].scale;
+      const endScale = phase.scale;
+      const startTime = performance.now();
+      function animate(now){
+        if(!running) return;
+        const p = Math.min((now-startTime)/phase.ms, 1);
+        setScale(startScale + (endScale-startScale)*p);
+        if(p < 1){ requestAnimationFrame(animate); }
+        else {
+          if(phase.name === 'Exhale'){
+            cycles++;
+            countEl.textContent = cycles + (cycles===1?' breath completed':' breaths completed');
+            countEl.classList.add('show');
+          }
+          timeoutId = setTimeout(()=> runPhase(i+1), 0);
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    function start(){
+      running = true;
+      mandala.classList.add('guiding');
+      toggle.textContent = '⏸ Stop breathing exercise';
+      runPhase(0);
+    }
+    function stop(){
+      running = false;
+      clearTimeout(timeoutId);
+      mandala.classList.remove('guiding');
+      toggle.textContent = '🧘 Try a guided breath';
+      label.innerHTML = '<span>Inhale · Exhale</span>';
+      core.style.transform = '';
+      rings.forEach(r=> r.style.transform = '');
+    }
+    function toggleBreathing(){ running ? stop() : start(); }
+    toggle.addEventListener('click', toggleBreathing);
+    mandala.addEventListener('click', toggleBreathing);
+    mandala.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggleBreathing(); } });
+  })();
+
+  // ---------- Trainer photo 3D tilt ----------
+  (function initTilt(){
+    const photo = document.querySelector('.trainer-photo');
+    if(!photo || window.matchMedia('(hover: none)').matches) return;
+    const img = photo.querySelector('img');
+    photo.addEventListener('mousemove', (e)=>{
+      const rect = photo.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      photo.style.transform = `perspective(900px) rotateY(${px*10}deg) rotateX(${-py*10}deg)`;
+      if(img) img.style.transform = `scale(1.06) translate(${-px*10}px, ${-py*10}px)`;
+    });
+    photo.addEventListener('mouseleave', ()=>{
+      photo.style.transform = '';
+      if(img) img.style.transform = '';
+    });
+  })();
+
+  // ---------- Testimonials carousel ----------
+  (function initTestimonials(){
+    const slidesWrap = document.getElementById('tSlides');
+    const dotsWrap = document.getElementById('tDots');
+    const prevBtn = document.getElementById('tPrev');
+    const nextBtn = document.getElementById('tNext');
+    if(!slidesWrap) return;
+    const slides = slidesWrap.children;
+    let idx = 0, timer = null;
+    for(let i=0;i<slides.length;i++){
+      const dot = document.createElement('button');
+      dot.className = 't-dot' + (i===0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to testimonial ' + (i+1));
+      dot.addEventListener('click', ()=> go(i));
+      dotsWrap.appendChild(dot);
+    }
+    const dots = dotsWrap.children;
+    function go(i){
+      idx = (i + slides.length) % slides.length;
+      slidesWrap.style.transform = `translateX(-${idx*100}%)`;
+      Array.from(dots).forEach((d,di)=> d.classList.toggle('active', di===idx));
+      resetTimer();
+    }
+    function resetTimer(){
+      clearInterval(timer);
+      timer = setInterval(()=> go(idx+1), 6000);
+    }
+    prevBtn.addEventListener('click', ()=> go(idx-1));
+    nextBtn.addEventListener('click', ()=> go(idx+1));
+    // swipe support
+    let startX = null;
+    slidesWrap.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; });
+    slidesWrap.addEventListener('touchend', (e)=>{
+      if(startX===null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 40) go(idx + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+    resetTimer();
+  })();
+
+  // ---------- FAQ live search ----------
+  (function initFaqSearch(){
+    const input = document.getElementById('faqSearch');
+    const empty = document.getElementById('faqEmpty');
+    if(!input) return;
+    input.addEventListener('input', ()=>{
+      const q = input.value.trim().toLowerCase();
+      let visible = 0;
+      document.querySelectorAll('.faq-item').forEach(item=>{
+        const text = item.textContent.toLowerCase();
+        const match = text.includes(q);
+        item.classList.toggle('hidden', !match);
+        if(match) visible++;
+      });
+      empty.classList.toggle('show', visible===0);
+    });
+  })();
 
   // ---------- Floating hero petals ----------
   (function initPetals(){
@@ -877,6 +1564,7 @@
   });
 
   // Load Gallery from images.json
+  let galleryImages = [];
   async function loadGallery() {
     try {
       const response = await fetch('images.json');
@@ -886,12 +1574,15 @@
       }
       
       const images = await response.json();
+      galleryImages = images;
       const container = document.getElementById('galleryContainer');
       
-      images.forEach(img => {
+      images.forEach((img, i) => {
         const div = document.createElement('div');
         div.className = 'gallery-item';
+        div.dataset.index = i;
         div.innerHTML = `<img src="${img.src}" alt="${img.alt}" loading="lazy">`;
+        div.addEventListener('click', ()=> openLightbox(i));
         container.appendChild(div);
       });
       observeReveals(container);
@@ -903,6 +1594,33 @@
         '<p style="text-align:center; grid-column: 1 / -1; color: var(--ink-soft);">Gallery currently unavailable.</p>';
     }
   }
+
+  // ---------- Lightbox viewer ----------
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  let lbIndex = 0;
+  function openLightbox(i){
+    if(!galleryImages.length) return;
+    lbIndex = i;
+    updateLightbox();
+    lightbox.classList.add('show');
+  }
+  function updateLightbox(){
+    const img = galleryImages[lbIndex];
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt || '';
+  }
+  function closeLightbox(){ lightbox.classList.remove('show'); }
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', ()=>{ lbIndex = (lbIndex - 1 + galleryImages.length) % galleryImages.length; updateLightbox(); });
+  document.getElementById('lightboxNext').addEventListener('click', ()=>{ lbIndex = (lbIndex + 1) % galleryImages.length; updateLightbox(); });
+  lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{
+    if(!lightbox.classList.contains('show')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % galleryImages.length; updateLightbox(); }
+    if(e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + galleryImages.length) % galleryImages.length; updateLightbox(); }
+  });
 
   // Initialize the gallery fetch
   loadGallery();
