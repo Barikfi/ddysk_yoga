@@ -1660,7 +1660,7 @@
     const popup = document.getElementById('promoPopup');
     const closeBtn = document.getElementById('closePopup');
 
-    // Show popup after 3 seconds (3000 milliseconds)
+    // Show popup after 12 seconds (12000 milliseconds)
     setTimeout(() => {
       // Using sessionStorage prevents the popup from annoying users 
       // every single time they refresh or navigate the page in one sitting.
@@ -1668,7 +1668,7 @@
         popup.classList.add('show');
         sessionStorage.setItem('popupShown', 'true');
       }
-    }, 3000);
+    }, 12000);
 
     // Close when clicking the 'X' button
     closeBtn.addEventListener('click', () => {
