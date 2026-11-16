@@ -401,21 +401,27 @@
   .breath-count.show{opacity:1;}
 
 
-  /* ---------- countdown ---------- */
-  .countdown-bar{
-    background:var(--pine); color:var(--parchment);
-  }
-  .countdown-inner{
-    display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between;
-    padding:22px 0;
-  }
-  .countdown-inner .wrap{display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between; width:100%;}
-  .cd-label{font-size:0.95rem; font-weight:500; opacity:0.9;}
-  .cd-label strong{font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem;}
-  .cd-timer{display:flex; gap:14px;}
-  .cd-unit{text-align:center; min-width:56px;}
-  .cd-unit .num{font-family:'JetBrains Mono', monospace; font-size:1.5rem; font-weight:600;}
-  .cd-unit .unit{font-size:0.62rem; text-transform:uppercase; letter-spacing:0.1em; opacity:0.75;}
+
+  /* ---------- youtube ---------- */
+  #youtube{background:var(--parchment-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .yt-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  @media(max-width:900px){ .yt-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .yt-grid{grid-template-columns:1fr;} }
+  .yt-card{background:var(--parchment); border:1px solid var(--line); border-radius:16px; overflow:hidden; transition:transform .3s, box-shadow .3s;}
+  .yt-card:hover{transform:translateY(-6px); box-shadow:0 14px 30px rgba(15,61,46,0.14);}
+  .yt-thumb{position:relative; display:block; width:100%; aspect-ratio:16/9; background:var(--pine-deep); border:0; padding:0; cursor:pointer; overflow:hidden;}
+  .yt-thumb img,.yt-thumb iframe{position:absolute; inset:0; width:100%; height:100%; border:0; object-fit:cover;}
+  .yt-thumb img{transition:transform .5s ease;}
+  .yt-card:hover .yt-thumb img{transform:scale(1.05);}
+  .yt-play{position:absolute; top:50%; left:50%; width:58px; height:42px; margin:-21px 0 0 -29px; background:rgba(204,0,0,0.92); border-radius:12px; display:flex; align-items:center; justify-content:center; transition:background .25s, transform .25s;}
+  .yt-play::after{content:""; border-style:solid; border-width:9px 0 9px 15px; border-color:transparent transparent transparent #fff; margin-left:3px;}
+  .yt-card:hover .yt-play{background:#e00; transform:scale(1.1);}
+  .yt-info{padding:16px 18px 20px;}
+  .yt-info h4{font-size:1rem; line-height:1.4;}
+  .yt-loading{grid-column:1/-1; text-align:center; color:var(--ink-soft);}
+  .yt-fallback{max-width:860px; margin:0 auto; aspect-ratio:16/9; border-radius:16px; overflow:hidden; border:1px solid var(--line);}
+  .yt-fallback iframe{width:100%; height:100%; border:0;}
+  .yt-more{text-align:center; margin-top:40px;}
 
   /* ---------- stat strip ---------- */
   .stat-strip{background:var(--parchment-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
@@ -755,6 +761,7 @@
       <a href="#testimonials" class="spy-link">Stories</a>
       <a href="#how" class="spy-link">How it works</a>
       <a href="#gallery" class="spy-link">Gallery</a>
+      <a href="#youtube" class="spy-link" id="ytNavLink">YouTube</a>
       <a href="#faq" class="spy-link">FAQs</a>
       <a href="https://forms.gle/Y3cbfjMTQh3Yc1DW9" class="btn saffron" target="_blank" rel="noopener">Join Free</a>
     </nav>
@@ -793,18 +800,6 @@
     </div>
   </div>
 </section>
-
-<div class="countdown-bar">
-  <div class="countdown-inner wrap">
-    <div class="cd-label">Batch starts <strong>2 August 2026</strong> — reserve your spot today</div>
-    <div class="cd-timer" id="countdown">
-      <div class="cd-unit"><div class="num" id="cd-days">--</div><div class="unit">Days</div></div>
-      <div class="cd-unit"><div class="num" id="cd-hours">--</div><div class="unit">Hrs</div></div>
-      <div class="cd-unit"><div class="num" id="cd-mins">--</div><div class="unit">Min</div></div>
-      <div class="cd-unit"><div class="num" id="cd-secs">--</div><div class="unit">Sec</div></div>
-    </div>
-  </div>
-</div>
 
 <div class="stat-strip">
   <div class="wrap stagger reveal">
@@ -977,6 +972,18 @@
   </div>
 </section>
 
+<section id="youtube">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <p class="eyebrow">On YouTube</p>
+      <h2>Practice with us, any time</h2>
+      <p>Watch sessions from our channel and keep your sadhana going.</p>
+    </div>
+    <div class="yt-grid" id="ytGrid"></div>
+    <div class="yt-more"><a class="btn saffron" id="ytChannelLink" href="https://www.youtube.com/@DdyskYogaKendraofficial" target="_blank" rel="noopener">Visit our YouTube channel</a></div>
+  </div>
+</section>
+
 <section id="faq">
   <div class="wrap" style="max-width:760px;">
     <div class="section-head reveal">
@@ -1036,6 +1043,7 @@
           <li><a href="#program">What's included</a></li>
           <li><a href="#how">How it works</a></li>
           <li><a href="#faq">FAQs</a></li>
+          <li><a href="#youtube" id="ytFooterLink">YouTube</a></li>
         </ul>
       </div>
       <div>
@@ -1568,22 +1576,59 @@
     }
   })();
 
-  // Countdown to 2 Aug 2026
-  const target = new Date("2026-08-02T00:00:00+05:30").getTime();
-  function updateCountdown(){
-    const now = Date.now();
-    const diff = Math.max(0, target - now);
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
-  }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  // YouTube section: loads the latest videos from the channel automatically
+  (function(){
+    const CHANNEL_URL = "https://www.youtube.com/@DdyskYogaKendraofficial";
+    const CHANNEL_ID  = "UC7xcFEkgKtP3nGbcqYtystQ";
+    const MAX_VIDEOS  = 9;
+    // Optional: pin videos by hand instead, as { id: "VIDEO_ID", title: "Title" }
+    const MANUAL_VIDEOS = [];
+
+    const grid = document.getElementById('ytGrid');
+    const link = document.getElementById('ytChannelLink');
+    if(!grid) return;
+    if(link) link.href = CHANNEL_URL;
+    const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+    function render(videos){
+      grid.innerHTML = '';
+      videos.slice(0, MAX_VIDEOS).forEach(v=>{
+        const card = document.createElement('article');
+        card.className = 'yt-card';
+        card.innerHTML =
+          '<button type="button" class="yt-thumb" aria-label="Play ' + esc(v.title) + '">' +
+            '<img loading="lazy" src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg" alt="' + esc(v.title) + '">' +
+            '<span class="yt-play"></span>' +
+          '</button>' +
+          '<div class="yt-info"><h4>' + esc(v.title) + '</h4></div>';
+        card.querySelector('.yt-thumb').addEventListener('click', function(){
+          this.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&rel=0" title="' + esc(v.title) + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+        }, {once:true});
+        grid.appendChild(card);
+      });
+    }
+
+    // If the feed can't be loaded, show the channel's uploads as an embedded playlist instead
+    function fallback(){
+      grid.className = 'yt-fallback';
+      grid.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UU' + CHANNEL_ID.slice(2) + '" title="Ddysk Yoga Kendra videos" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    }
+
+    if(MANUAL_VIDEOS.length){ render(MANUAL_VIDEOS); return; }
+
+    grid.innerHTML = '<p class="yt-loading">Loading videos…</p>';
+    const feed = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
+    fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed))
+      .then(r => r.json())
+      .then(d => {
+        const vids = (d.items || []).map(i => {
+          const m = (i.link || i.guid || '').match(/(?:v=|video:)([\w-]{11})/);
+          return m ? { id: m[1], title: i.title } : null;
+        }).filter(Boolean);
+        vids.length ? render(vids) : fallback();
+      })
+      .catch(fallback);
+  })();
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(btn=>{
